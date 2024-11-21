@@ -5,7 +5,7 @@ import requests
 BASE_URL = "http://localhost:8000"
 
 def main():
-    with open("movies.csv") as fd:
+    with open(r".\csv\movies.csv") as fd:
         movies_csv = csv.DictReader(fd)
         for movie in movies_csv:
             x = requests.post(BASE_URL + "/movie", json=movie)

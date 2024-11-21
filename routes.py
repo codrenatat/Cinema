@@ -3,7 +3,7 @@ from fastapi import APIRouter, Body, Request, Response, HTTPException, status
 from fastapi.encoders import jsonable_encoder
 from typing import List
 
-from model import Movie, MovieUpdate
+from src.models.movieModel import Movie, MovieUpdate
 
 router = APIRouter()
 
