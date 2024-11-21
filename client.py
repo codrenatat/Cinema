@@ -4,28 +4,27 @@ import logging
 import os
 import requests
 
-
 # Set logger
 log = logging.getLogger()
 log.setLevel('INFO')
-handler = logging.FileHandler('movies.log')  # Updated log file name
+handler = logging.FileHandler('movies.log')
 handler.setFormatter(logging.Formatter("%(asctime)s [%(levelname)s] %(name)s: %(message)s"))
 log.addHandler(handler)
 
 # Read env vars related to API connection
-MOVIES_API_URL = os.getenv("MOVIES_API_URL", "http://localhost:8000")  # Updated environment variable
-
+MOVIES_API_URL = os.getenv("MOVIES_API_URL", "http://localhost:8000")
 
 def print_movie(movie):
     for k in movie.keys():
         print(f"{k}: {movie[k]}")
-    print("="*50)
+    print("=" * 50)
 
-
-def list_movies(genre=None):
-    suffix = "/movies"
+def list_movies(genre):
+    suffix = "/movie"
     endpoint = MOVIES_API_URL + suffix
-    params = {"genre": genre} if genre else {}
+    params = {
+        "genre": genre
+    }
     response = requests.get(endpoint, params=params)
     if response.ok:
         json_resp = response.json()
@@ -34,9 +33,8 @@ def list_movies(genre=None):
     else:
         print(f"Error: {response}")
 
-
 def get_movie_by_id(id):
-    suffix = f"/movies/{id}"
+    suffix = f"/movie/{id}"
     endpoint = MOVIES_API_URL + suffix
     response = requests.get(endpoint)
     if response.ok:
@@ -45,21 +43,11 @@ def get_movie_by_id(id):
     else:
         print(f"Error: {response}")
 
-
 def update_movie(id):
-    # Implement update logic here
     pass
 
-
 def delete_movie(id):
-    suffix = f"/movies/{id}"
-    endpoint = MOVIES_API_URL + suffix
-    response = requests.delete(endpoint)
-    if response.ok:
-        print(f"Movie with ID {id} has been deleted.")
-    else:
-        print(f"Error: {response}")
-
+    pass
 
 def main():
     log.info(f"Welcome to movies catalog. App requests to: {MOVIES_API_URL}")
@@ -68,11 +56,11 @@ def main():
 
     list_of_actions = ["search", "get", "update", "delete"]
     parser.add_argument("action", choices=list_of_actions,
-                        help="Action to be used for the movies catalog")
+                        help="Action to be used for the movies library")
     parser.add_argument("-i", "--id",
-                        help="Provide a movie ID for the related action", default=None)
+                        help="Provide a movie ID which is related to the movie action", default=None)
     parser.add_argument("-g", "--genre",
-                        help="Search parameter to filter movies by genre", default=None)
+                        help="Search parameter to look for movies with a specific genre", default=None)
 
     args = parser.parse_args()
 
@@ -92,7 +80,6 @@ def main():
         update_movie(args.id)
     elif args.action == "delete":
         delete_movie(args.id)
-
 
 if __name__ == "__main__":
     main()

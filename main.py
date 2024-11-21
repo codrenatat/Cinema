@@ -4,10 +4,11 @@ import os
 from fastapi import FastAPI
 from pymongo import MongoClient
 
-from src.routes.routes import router as movie_router  
+from routes import router as movie_router
+
 
 MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb://localhost:27017')
-DB_NAME = os.getenv('MONGODB_DB_NAME', 'cinema')  
+DB_NAME = os.getenv('MONGODB_DB_NAME', 'iteso')
 
 app = FastAPI()
 
@@ -22,5 +23,4 @@ def shutdown_db_client():
     app.mongodb_client.close()
     print("Bye bye...!!")
 
-# Updated router inclusion
-app.include_router(movie_router, tags=["movies"], prefix="/movies")
+app.include_router(movie_router, tags=["movies"], prefix="/movie")
