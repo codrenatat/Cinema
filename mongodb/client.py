@@ -3,6 +3,7 @@ import argparse
 import logging
 import os
 import requests
+import json
 
 # Set logger
 log = logging.getLogger()
@@ -15,8 +16,8 @@ log.addHandler(handler)
 API_URL = os.getenv("API_URL", "http://localhost:8000")
 
 def print_item(item):
-    for k in item.keys():
-        print(f"{k}: {item[k]}")
+    for k, v in item.items():
+        print(f"{k}: {v}")
     print("=" * 50)
 
 def list_items(item_type, genre=None):
@@ -42,7 +43,22 @@ def get_item_by_id(item_type, id):
         print(f"Error: {response}")
 
 def update_item(item_type, id):
-    pass
+    suffix = f"/{item_type}/{id}"
+    endpoint = API_URL + suffix
+    # Example payload for update
+    data = {
+        "title": "Updated Title" if item_type == "movie" else None,
+        "username": "updated_user" if item_type == "user" else None,
+        "name": "Updated Theater" if item_type == "theater" else None,
+        "showtime": "2025-01-01T00:00:00" if item_type == "showtime" else None,
+        "status": "read" if item_type == "notification" else None
+    }
+    data = {k: v for k, v in data.items() if v is not None}
+    response = requests.put(endpoint, json=data)
+    if response.ok:
+        print(f"{item_type.capitalize()} with ID {id} has been updated successfully.")
+    else:
+        print(f"Error: {response.status_code} - {response.text}")
 
 def delete_item(item_type, id):
     suffix = f"/{item_type}/{id}"
@@ -59,7 +75,7 @@ def main():
     parser = argparse.ArgumentParser()
 
     list_of_actions = ["search", "get", "update", "delete"]
-    list_of_item_types = ["movie", "showtime", "theater", "user"]
+    list_of_item_types = ["movie", "showtime", "theater", "user", "notification"]
     parser.add_argument("action", choices=list_of_actions,
                         help="Action to be used for the library")
     parser.add_argument("item_type", choices=list_of_item_types,
@@ -83,9 +99,9 @@ def main():
         list_items(args.item_type, args.genre)
     elif args.action == "get" and args.id:
         get_item_by_id(args.item_type, args.id)
-    elif args.action == "update":
+    elif args.action == "update" and args.id:
         update_item(args.item_type, args.id)
-    elif args.action == "delete":
+    elif args.action == "delete" and args.id:
         delete_item(args.item_type, args.id)
 
 if __name__ == "__main__":

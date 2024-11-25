@@ -3,6 +3,44 @@ from typing import Optional, List
 from pydantic import BaseModel, Field
 from datetime import datetime
 
+# Modelo para User
+class User(BaseModel):
+    id: str = Field(default_factory=uuid.uuid4, alias="_id")
+    username: str = Field(...)
+    email: str = Field(...)
+    hashed_password: str = Field(...)
+    created_at: datetime = Field(...)
+    last_login: Optional[datetime] = Field(None)
+    preferences: List[str] = Field(default_factory=list)
+    activity_log: List[dict] = Field(default_factory=list)
+    watchlist: List[str] = Field(default_factory=list)
+    deactivated_at: Optional[datetime] = Field(None)
+    tier: Optional[str] = Field(None)
+    feedback: List[dict] = Field(default_factory=list)
+    booking_history: List[dict] = Field(default_factory=list)
+    rating_reviews: List[dict] = Field(default_factory=list)
+
+    class Config:
+        populate_by_name = True
+        json_schema_extra = {
+            "example": {
+                "_id": "5e12b4c9a7896d5c2f34bc72",
+                "username": "jane_smith",
+                "email": "jane.smith@example.com",
+                "hashed_password": "$2b$12$Qb45tFD/C4G2pRZ1kR3.yzJ9z9sdghsPJ6v/xwTraDnBqLGJHvUmz",
+                "created_at": "2022-09-10T12:25:00Z",
+                "last_login": "2024-11-19T15:30:00Z",
+                "preferences": ["Romance", "Comedy", "Drama"],
+                "activity_log": [{"action": "login", "timestamp": "2024-11-19T15:35:00Z"}],
+                "watchlist": ["Inception", "Interstellar"],
+                "deactivated_at": None,
+                "tier": "gold",
+                "feedback": [{"feedback_text": "Great service!", "rating": 5, "timestamp": "2024-11-20T15:35:00Z"}],
+                "booking_history": [{"movie_id": "f54a9f9c-bac9-43f4-a0fa-fffd0dc9270c", "showtime_id": "e54a9f9c-bac9-43f4-a0fa-fffd0dc9270c", "theater_id": "5fb789c1def0e105d7cbbc20", "booking_date": "2024-11-19T18:00:00Z"}],
+                "rating_reviews": [{"movie_id": "f54a9f9c-bac9-43f4-a0fa-fffd0dc9270c", "rating": 5, "review_text": "Amazing movie!", "timestamp": "2024-11-20T18:00:00Z"}]
+            }
+        }
+
 # Modelo para Movie
 class Movie(BaseModel):
     id: str = Field(default_factory=uuid.uuid4, alias="_id")
@@ -16,22 +54,6 @@ class Movie(BaseModel):
         json_schema_extra = {
             "example": {
                 "_id": "f54a9f9c-bac9-43f4-a0fa-fffd0dc9270c",
-                "title": "Inception",
-                "genre": "Sci-Fi",
-                "duration": 148,
-                "description": "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O."
-            }
-        }
-
-class MovieUpdate(BaseModel):
-    title: Optional[str]
-    genre: Optional[str]
-    duration: Optional[int]
-    description: Optional[str]
-
-    class Config:
-        json_schema_extra = {
-            "example": {
                 "title": "Inception",
                 "genre": "Sci-Fi",
                 "duration": 148,
@@ -77,32 +99,22 @@ class Theater(BaseModel):
             }
         }
 
-# Modelo para User
-class User(BaseModel):
+# Modelo para Notification
+class Notification(BaseModel):
     id: str = Field(default_factory=uuid.uuid4, alias="_id")
-    username: str = Field(...)
-    email: str = Field(...)
-    hashed_password: str = Field(...)
-    created_at: datetime = Field(...)
-    last_login: Optional[datetime] = Field(None)
-    preferences: List[str] = Field(default_factory=list)
-    activity_timestamp: Optional[datetime] = Field(None)
-    activity_type: Optional[str] = Field(None)
-    activity_details: Optional[str] = Field(None)
+    user_id: str = Field(...)
+    movie_id: Optional[str]
+    showtime: Optional[datetime]
+    status: str = Field(...)
 
     class Config:
         populate_by_name = True
         json_schema_extra = {
             "example": {
-                "_id": "5e12b4c9a7896d5c2f34bc72",
-                "username": "jane_smith",
-                "email": "jane.smith@example.com",
-                "hashed_password": "$2b$12$Qb45tFD/C4G2pRZ1kR3.yzJ9z9sdghsPJ6v/xwTraDnBqLGJHvUmz",
-                "created_at": "2022-09-10T12:25:00Z",
-                "last_login": "2024-11-19T15:30:00Z",
-                "preferences": ["Romance", "Comedy", "Drama"],
-                "activity_timestamp": "2024-11-19T15:35:00Z",
-                "activity_type": "login",
-                "activity_details": "User logged in from IP 10.0.0.5"
+                "_id": "a12b4c9a7896d5c2f34bc72",
+                "user_id": "5e12b4c9a7896d5c2f34bc72",
+                "movie_id": "f54a9f9c-bac9-43f4-a0fa-fffd0dc9270c",
+                "showtime": "2024-11-21T18:00:00",
+                "status": "unread"
             }
         }

@@ -2,10 +2,4 @@ theater_id,name,location,seating_capacity
 5fb789c1def0e105d7cbbc20,Cinema Center Downtown,New York,250
 5fb789c1def0e105d7cbbc21,Grand Theater Mall,Los Angeles,300
 5fb789c1def0e105d7cbbc22,Sunrise Cineplex,Miami,200
-5fb789c1def0e105d7cbbc23,Galaxy Multiplex,Chicago,350
-5fb789c1def0e105d7cbbc24,Starlight Cinema,Boston,150
-5fb789c1def0e105d7cbbc25,Luxury Cinema,San Francisco,180
-5fb789c1def0e105d7cbbc26,Regal Plaza,Cleveland,220
-5fb789c1def0e105d7cbbc27,Silver Screen Complex,Seattle,270
-5fb789c1def0e105d7cbbc28,Empire Cinema,Houston,320
-5fb789c1def0e105d7cbbc29,Majestic Theater,Austin,240
+

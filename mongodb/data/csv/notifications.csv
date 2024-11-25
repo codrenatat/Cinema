@@ -1,0 +1,4 @@
+notification_id,user_id,movie_id,showtime,status
+1,5e12b4c9a7896d5c2f34bc72,f54a9f9c-bac9-43f4-a0fa-fffd0dc9270c,2024-11-21T18:00,unread
+2,5e12b4c9a7896d5c2f34bc72,,2024-11-21T20:00,read
+3,6b12a4d9a7896d5c2f34bc23,f54a9f9c-bac9-43f4-a0fa-fffd0dc9270c,2024-11-22T14:00,unread
